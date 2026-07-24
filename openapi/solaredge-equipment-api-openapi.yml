@@ -1,0 +1,254 @@
+openapi: 3.1.0
+info:
+  title: SolarEdge Monitoring Account Equipment API
+  version: '1.0'
+  description: Read-only REST API over the SolarEdge monitoring platform. Exposes photovoltaic site inventory, energy and power production, storage/battery data, environmental benefits, equipment telemetry, meters and sensors for sites the calling account can access. Authentication is by an api_key issued in the SolarEdge monitoring platform (Admin > Site Access > API Access). Responses default to JSON; several endpoints also support CSV and XML via the format/Accept negotiation documented by SolarEdge.
+  contact:
+    name: SolarEdge Support
+    url: https://www.solaredge.com/us/service/support
+  termsOfService: https://www.solaredge.com/us/legal/eula
+servers:
+- url: https://monitoringapi.solaredge.com
+  description: SolarEdge Monitoring API production host
+security:
+- api_key: []
+tags:
+- name: Equipment
+  description: Inverters, optimizers, gateways, meters and sensors.
+paths:
+  /site/{siteId}/inventory:
+    get:
+      operationId: getSiteInventory
+      summary: Site Inventory
+      description: Returns the inventory of SolarEdge equipment in the site, including inverters, batteries, meters, gateways and sensors.
+      tags:
+      - Equipment
+      parameters:
+      - $ref: '#/components/parameters/siteId'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /equipment/{siteId}/list:
+    get:
+      operationId: getEquipmentList
+      summary: Components List
+      description: Returns a list of inverters/SMIs in the specific site.
+      tags:
+      - Equipment
+      parameters:
+      - $ref: '#/components/parameters/siteId'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /equipment/{siteId}/{serialNumber}/data:
+    get:
+      operationId: getEquipmentData
+      summary: Inverter Technical Data
+      description: Returns specific inverter data for a given timeframe.
+      tags:
+      - Equipment
+      parameters:
+      - $ref: '#/components/parameters/siteId'
+      - $ref: '#/components/parameters/serialNumber'
+      - $ref: '#/components/parameters/startTime'
+      - $ref: '#/components/parameters/endTime'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /equipment/{siteId}/{serialNumber}/changeLog:
+    get:
+      operationId: getEquipmentChangeLog
+      summary: Equipment Change Log
+      description: Returns a list of equipment component replacements ordered by date for a given component serial number.
+      tags:
+      - Equipment
+      parameters:
+      - $ref: '#/components/parameters/siteId'
+      - $ref: '#/components/parameters/serialNumber'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /site/{siteId}/meters:
+    get:
+      operationId: getSiteMeters
+      summary: Site Meters
+      description: Returns for each meter on site its lifetime energy reading, metadata and the associated component.
+      tags:
+      - Equipment
+      parameters:
+      - $ref: '#/components/parameters/siteId'
+      - $ref: '#/components/parameters/startTime'
+      - $ref: '#/components/parameters/endTime'
+      - $ref: '#/components/parameters/timeUnit'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /equipment/{siteId}/sensors:
+    get:
+      operationId: getSiteSensorList
+      summary: Get Sensor List
+      description: Returns a list of all the sensors in the site, and the device to which they are connected.
+      tags:
+      - Equipment
+      parameters:
+      - $ref: '#/components/parameters/siteId'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+  /site/{siteId}/sensors:
+    get:
+      operationId: getSiteSensorData
+      summary: Get Sensor Data
+      description: Returns the data of all the sensors in the site, by the gateway they are connected to.
+      tags:
+      - Equipment
+      parameters:
+      - $ref: '#/components/parameters/siteId'
+      - $ref: '#/components/parameters/startDate'
+      - $ref: '#/components/parameters/endDate'
+      responses:
+        '200':
+          $ref: '#/components/responses/OK'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+components:
+  responses:
+    OK:
+      description: Successful response.
+      content:
+        application/json:
+          schema:
+            type: object
+    Unauthorized:
+      description: Authentication failed (missing or invalid api_key).
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+          example:
+            type: https://se-api.stoplight.io/docs/monitoring
+            title: Unauthorized - Authentication Failed
+            status: 401
+            detail: Invalid API key
+            instance: null
+            properties:
+              traceId: 6a5f1ad81a5cfa8cd685fc4401bd7770
+    TooManyRequests:
+      description: The api_key/site daily query quota has been exceeded.
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+  parameters:
+    siteId:
+      name: siteId
+      in: path
+      required: true
+      description: The site identifier.
+      schema:
+        type: integer
+    startDate:
+      name: startDate
+      in: query
+      required: true
+      description: Start date in yyyy-MM-dd format.
+      schema:
+        type: string
+        format: date
+    endDate:
+      name: endDate
+      in: query
+      required: true
+      description: End date in yyyy-MM-dd format.
+      schema:
+        type: string
+        format: date
+    timeUnit:
+      name: timeUnit
+      in: query
+      description: Aggregation granularity.
+      schema:
+        type: string
+        enum:
+        - QUARTER_OF_AN_HOUR
+        - HOUR
+        - DAY
+        - WEEK
+        - MONTH
+        - YEAR
+    startTime:
+      name: startTime
+      in: query
+      required: true
+      description: Start timestamp in yyyy-MM-dd HH:mm:ss format.
+      schema:
+        type: string
+    serialNumber:
+      name: serialNumber
+      in: path
+      required: true
+      description: The inverter/component short serial number.
+      schema:
+        type: string
+    endTime:
+      name: endTime
+      in: query
+      required: true
+      description: End timestamp in yyyy-MM-dd HH:mm:ss format.
+      schema:
+        type: string
+  schemas:
+    Problem:
+      type: object
+      description: RFC 9457 problem details envelope returned by the SolarEdge Monitoring API on errors.
+      properties:
+        type:
+          type: string
+          format: uri
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type:
+          - string
+          - 'null'
+        properties:
+          type: object
+          properties:
+            traceId:
+              type: string
+  securitySchemes:
+    api_key:
+      type: apiKey
+      in: query
+      name: api_key
+      description: API key generated in the SolarEdge monitoring platform under Admin > Site Access > API Access. Passed as the api_key query parameter on every request.
