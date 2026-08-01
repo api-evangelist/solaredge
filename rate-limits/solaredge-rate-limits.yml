@@ -1,0 +1,33 @@
+generated: '2026-07-21'
+method: searched
+source: https://api-docs.solaredge.com/ (SolarEdge Monitoring API "Usage Limitations")
+description: >-
+  The SolarEdge Monitoring API enforces a per-day query quota rather than a
+  per-second rate. SolarEdge's published usage limitations cap requests per api_key
+  and per site per day, cap total daily requests per account, and cap concurrent
+  requests; exceeding a limit returns HTTP 429. Values below are the long-standing
+  published limits; re-verify against the current reference before relying on them.
+rate_limits:
+  - scope: per api_key + per site
+    limit_count: 300
+    window: day
+    note: 300 requests per day for a specific api_key and a specific site id.
+  - scope: per account
+    limit_count: 300
+    window: day
+    note: 300 requests per day per account across the account's sites.
+  - scope: concurrency
+    limit_count: 3
+    window: concurrent
+    note: Maximum of 3 concurrent requests.
+enforcement:
+  status_code: 429
+  envelope: application/problem+json (RFC 9457)
+  ref: errors/solaredge-problem-types.yml
+verification:
+  live_host_probed: true
+  counts_verified_this_pass: false
+  note: >-
+    The api_key gate was verified live (401 problem+json); the numeric quotas are
+    transcribed from SolarEdge's published usage-limitations documentation and were
+    not re-fetched from the gated reference during this pass.

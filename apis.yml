@@ -1,8 +1,29 @@
 aid: solaredge
 name: Solaredge
-description: Solaredge is a company surfaced as a portfolio company of lightspeed-venture-partners and
-  added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment
-  pipeline.
+description: >-
+  SolarEdge Technologies is a global provider of DC-optimized photovoltaic (PV)
+  inverter systems — combining power optimizers, string inverters, batteries, EV
+  chargers and a cloud monitoring platform for residential, commercial and utility
+  solar installations. Its public developer surface is the SolarEdge Monitoring API,
+  a read-only REST API over monitoringapi.solaredge.com that exposes site inventory,
+  energy and power production, battery/storage telemetry, environmental benefits,
+  equipment/inverter data, meters and sensors for the sites an account can access.
+  Authentication is a single api_key query parameter issued in the SolarEdge
+  monitoring platform; responses are JSON by default and errors use RFC 9457
+  problem+json (verified live).
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://monitoring.solaredge.com/solaredge-web/common/img/se-new-logo.png
 url: https://raw.githubusercontent.com/api-evangelist/solaredge/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -12,12 +33,143 @@ x-tier: stub
 x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-21'
 tags:
 - Company
-apis: []
+- Solar Energy
+- Photovoltaic
+- Energy Monitoring
+- IoT
+- Renewable Energy
+- Inverters
+- Energy Storage
+apis:
+- aid: solaredge:solaredge-account-api
+  name: Solaredge Account API
+  description: Account hierarchy.
+  humanURL: https://api-docs.solaredge.com/
+  baseURL: https://monitoringapi.solaredge.com
+  tags:
+  - Account
+  properties:
+  - type: OpenAPI
+    url: openapi/solaredge-account-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.solaredge.com/
+  - type: APIReference
+    url: https://api-docs.solaredge.com/
+  - type: Authentication
+    url: authentication/solaredge-authentication.yml
+- aid: solaredge:solaredge-equipment-api
+  name: Solaredge Equipment API
+  description: Inverters, optimizers, gateways, meters and sensors.
+  humanURL: https://api-docs.solaredge.com/
+  baseURL: https://monitoringapi.solaredge.com
+  tags:
+  - Equipment
+  properties:
+  - type: OpenAPI
+    url: openapi/solaredge-equipment-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.solaredge.com/
+  - type: APIReference
+    url: https://api-docs.solaredge.com/
+  - type: Authentication
+    url: authentication/solaredge-authentication.yml
+- aid: solaredge:solaredge-sites-api
+  name: Solaredge Sites API
+  description: Site-level list, details, energy, power and environmental data.
+  humanURL: https://api-docs.solaredge.com/
+  baseURL: https://monitoringapi.solaredge.com
+  tags:
+  - Sites
+  properties:
+  - type: OpenAPI
+    url: openapi/solaredge-sites-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.solaredge.com/
+  - type: APIReference
+    url: https://api-docs.solaredge.com/
+  - type: Authentication
+    url: authentication/solaredge-authentication.yml
+- aid: solaredge:solaredge-storage-api
+  name: Solaredge Storage API
+  description: Battery / storage telemetry.
+  humanURL: https://api-docs.solaredge.com/
+  baseURL: https://monitoringapi.solaredge.com
+  tags:
+  - Storage
+  properties:
+  - type: OpenAPI
+    url: openapi/solaredge-storage-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.solaredge.com/
+  - type: APIReference
+    url: https://api-docs.solaredge.com/
+  - type: Authentication
+    url: authentication/solaredge-authentication.yml
+- aid: solaredge:solaredge-version-api
+  name: Solaredge Version API
+  description: API version discovery.
+  humanURL: https://api-docs.solaredge.com/
+  baseURL: https://monitoringapi.solaredge.com
+  tags:
+  - Version
+  properties:
+  - type: OpenAPI
+    url: openapi/solaredge-version-api-openapi.yml
+  - type: Documentation
+    url: https://api-docs.solaredge.com/
+  - type: APIReference
+    url: https://api-docs.solaredge.com/
+  - type: Authentication
+    url: authentication/solaredge-authentication.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+x-enrichment:
+  date: '2026-07-21'
+  status: enriched
+  artifacts_added: 13
+  pass: local-v1
+common:
+- type: DomainSecurity
+  url: security/solaredge-domain-security.yml
+- type: DeveloperPortal
+  url: https://api-docs.solaredge.com/
+- type: Documentation
+  url: https://api-docs.solaredge.com/
+- type: APIReference
+  url: https://api-docs.solaredge.com/
+- type: Website
+  url: https://www.solaredge.com/
+- type: GitHubOrganization
+  url: https://github.com/SolarEdge
+- type: Support
+  url: https://www.solaredge.com/us/service/support
+- type: SignUp
+  url: https://monitoring.solaredge.com/solaredge-web/p/login
+- type: Login
+  url: https://monitoring.solaredge.com/solaredge-web/p/login
+- type: TermsOfService
+  url: https://www.solaredge.com/us/legal/eula
+- type: PrivacyPolicy
+  url: https://www.solaredge.com/us/legal/privacy-policy
+- type: Authentication
+  url: authentication/solaredge-authentication.yml
+- type: Conventions
+  url: conventions/solaredge-conventions.yml
+- type: ErrorCatalog
+  url: errors/solaredge-problem-types.yml
+- type: RateLimits
+  url: rate-limits/solaredge-rate-limits.yml
+- type: Lifecycle
+  url: lifecycle/solaredge-lifecycle.yml
+- type: Conformance
+  url: conformance/solaredge-conformance.yml
+- type: MCPServer
+  url: mcp/solaredge-mcp.yml
+- type: LLMsTxt
+  url: llms/solaredge-llms.txt

@@ -1,0 +1,22 @@
+{
+  "provider": "solaredge",
+  "sources": [
+    "solaredge-account-api-openapi.yml",
+    "solaredge-equipment-api-openapi.yml",
+    "solaredge-sites-api-openapi.yml",
+    "solaredge-storage-api-openapi.yml",
+    "solaredge-version-api-openapi.yml"
+  ],
+  "outputs": [
+    "solaredge-account-api-openapi.yml",
+    "solaredge-equipment-api-openapi.yml",
+    "solaredge-sites-api-openapi.yml",
+    "solaredge-storage-api-openapi.yml",
+    "solaredge-version-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

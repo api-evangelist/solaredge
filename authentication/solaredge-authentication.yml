@@ -1,0 +1,34 @@
+generated: '2026-07-21'
+method: searched
+source: https://api-docs.solaredge.com/
+docs: https://api-docs.solaredge.com/
+description: >-
+  The SolarEdge Monitoring API authenticates every request with a single API key
+  passed as the api_key query parameter. Keys are generated inside the SolarEdge
+  monitoring platform under Admin > Site Access > API Access and are scoped to the
+  account (and the sites it can access). There is no OAuth2/OIDC surface. Verified
+  live against https://monitoringapi.solaredge.com/version/current and
+  /sites/list?api_key=INVALID, both of which return an RFC 9457 problem+json body
+  with title "Unauthorized - Authentication Failed" / detail "Invalid API key"
+  (HTTP 401) when the key is missing or wrong.
+summary:
+  types: [apiKey]
+  api_key_in: [query]
+  oauth2_flows: []
+schemes:
+  - name: api_key
+    type: apiKey
+    in: query
+    parameter: api_key
+    description: >-
+      Account API key generated in the SolarEdge monitoring platform
+      (Admin > Site Access > API Access). Required on every endpoint.
+    sources:
+      - openapi/solaredge-monitoring-openapi.yml
+    evidence:
+      - {url: 'https://monitoringapi.solaredge.com/version/current', status: 401}
+      - {url: 'https://monitoringapi.solaredge.com/sites/list?api_key=INVALID', status: 401, body: 'RFC 9457 problem+json, detail "Invalid API key"'}
+notes: >-
+  The api_key travels in the URL query string, so it is exposed in server logs and
+  browser history; SolarEdge documents rotating/regenerating the key from the
+  monitoring platform. No refresh-token or scope model exists.
